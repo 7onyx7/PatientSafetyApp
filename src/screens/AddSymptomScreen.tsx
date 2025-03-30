@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Slider } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { usePatient } from '../contexts/PatientContext';
-import Input from '../components/Input';
-import Button from '../components/Button';
-import Card from '../components/Card';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
+import Slider from "@react-native-community/slider";
+import { useNavigation } from "@react-navigation/native";
+import { usePatient } from "../contexts/PatientContext";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import Card from "../components/Card";
 
 const AddSymptomScreen: React.FC = () => {
   const navigation = useNavigation();
   const { patient, addSymptom } = usePatient();
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [severity, setSeverity] = useState(5);
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!name.trim()) {
-      newErrors.name = 'Symptom name is required';
+      newErrors.name = "Symptom name is required";
     }
 
     setErrors(newErrors);
@@ -30,7 +31,9 @@ const AddSymptomScreen: React.FC = () => {
     if (!validateForm()) return;
 
     const today = new Date();
-    const dateString = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
+    const dateString = `${
+      today.getMonth() + 1
+    }/${today.getDate()}/${today.getFullYear()}`;
 
     try {
       await addSymptom({
@@ -41,7 +44,7 @@ const AddSymptomScreen: React.FC = () => {
       });
       navigation.goBack();
     } catch (error) {
-      console.error('Error adding symptom:', error);
+      console.error("Error adding symptom:", error);
     }
   };
 
@@ -51,7 +54,7 @@ const AddSymptomScreen: React.FC = () => {
         <Text style={styles.message}>Please set up your profile first</Text>
         <Button
           title="Go to Profile"
-          onPress={() => navigation.navigate('Profile' as never)}
+          onPress={() => navigation.navigate("Profile" as never)}
           style={styles.button}
         />
       </View>
@@ -62,7 +65,7 @@ const AddSymptomScreen: React.FC = () => {
     <ScrollView style={styles.container}>
       <Card>
         <Text style={styles.title}>Record Symptom</Text>
-        
+
         <Input
           label="Symptom Name"
           value={name}
@@ -109,26 +112,26 @@ const AddSymptomScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: "#F5F5F5",
     padding: 16,
   },
   centerContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 16,
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
-    color: '#333',
+    color: "#333",
   },
   message: {
     fontSize: 16,
     marginBottom: 24,
-    textAlign: 'center',
-    color: '#666',
+    textAlign: "center",
+    color: "#666",
   },
   button: {
     minWidth: 160,
@@ -138,13 +141,13 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
     marginBottom: 8,
-    color: '#333',
+    color: "#333",
   },
   sliderContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 8,
   },
   slider: {
@@ -154,15 +157,15 @@ const styles = StyleSheet.create({
   },
   sliderLabel: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
   },
   severityValue: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2196F3',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#2196F3",
+    textAlign: "center",
     marginBottom: 16,
   },
 });
 
-export default AddSymptomScreen; 
+export default AddSymptomScreen;

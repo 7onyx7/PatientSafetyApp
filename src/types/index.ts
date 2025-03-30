@@ -11,9 +11,11 @@ export interface Medication {
 
 export interface Symptom {
   id: string;
-  name: string;
-  severity: number; // 1-10
+  name?: string;
+  description: string;
+  severity: "low" | "medium" | "high";
   dateRecorded: string;
+  duration?: string;
   notes?: string;
 }
 
@@ -27,7 +29,7 @@ export interface Diagnosis {
 
 export interface MedicalHistory {
   id: string;
-  type: 'surgery' | 'illness' | 'injury' | 'other';
+  type: "surgery" | "illness" | "injury" | "other";
   name: string;
   date: string;
   notes?: string;
@@ -48,7 +50,7 @@ export interface Patient {
 export interface MedicationInteraction {
   drug1: string;
   drug2: string;
-  severity: 'minor' | 'moderate' | 'major';
+  severity: "minor" | "moderate" | "major";
   description: string;
   simplifiedExplanation: string; // Simple explanation for laypeople
   possibleEffects: string[]; // Potential effects that may occur
@@ -60,7 +62,7 @@ export type RootStackParamList = {
   Home: undefined;
   Profile: undefined;
   Medications: undefined;
-  AddMedication: undefined;
+  AddMedication: { medicationId?: string } | undefined;
   MedicationDetail: { medicationId: string };
   Symptoms: undefined;
   AddSymptom: undefined;
@@ -69,4 +71,4 @@ export type RootStackParamList = {
   MedicalHistory: undefined;
   AddMedicalHistory: undefined;
   Analysis: undefined;
-}; 
+};

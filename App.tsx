@@ -1,10 +1,10 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { PatientProvider } from './src/contexts/PatientContext';
-import Navigation from './src/navigation';
-import { View, Text } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as React from "react";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { PatientProvider } from "./src/contexts/PatientContext";
+import Navigation from "./src/navigation";
+import { View, Text } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   return (
@@ -12,9 +12,9 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <PatientProvider>
           <Navigation />
-          <StatusBar style="auto" />
+          <StatusBar style="light" />
         </PatientProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>
   );
-} 
+}

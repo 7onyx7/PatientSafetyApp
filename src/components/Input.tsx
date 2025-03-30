@@ -1,7 +1,14 @@
-import React from 'react';
-import { View, TextInput, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import React from "react";
+import {
+  View,
+  TextInput,
+  Text,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+} from "react-native";
 
-interface InputProps {
+export interface InputProps {
   label?: string;
   value: string;
   onChangeText: (text: string) => void;
@@ -12,6 +19,7 @@ interface InputProps {
   style?: ViewStyle;
   inputStyle?: TextStyle;
   labelStyle?: TextStyle;
+  darkMode?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -25,20 +33,27 @@ const Input: React.FC<InputProps> = ({
   style,
   inputStyle,
   labelStyle,
+  darkMode = false,
 }) => {
   return (
     <View style={[styles.container, style]}>
-      {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
+      {label && (
+        <Text style={[styles.label, darkMode && styles.darkLabel, labelStyle]}>
+          {label}
+        </Text>
+      )}
       <TextInput
         style={[
           styles.input,
           multiline && styles.multiline,
           error && styles.inputError,
+          darkMode && styles.darkInput,
           inputStyle,
         ]}
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
+        placeholderTextColor={darkMode ? "#8d8fa8" : "#999"}
         secureTextEntry={secureTextEntry}
         multiline={multiline}
       />
@@ -53,30 +68,39 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
     marginBottom: 8,
-    color: '#333',
+    color: "#333",
+  },
+  darkLabel: {
+    color: "white",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#DDDDDD',
+    borderColor: "#DDDDDD",
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
-    backgroundColor: 'white',
+    backgroundColor: "white",
+    color: "#333",
+  },
+  darkInput: {
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    borderColor: "rgba(255, 255, 255, 0.2)",
+    color: "white",
   },
   multiline: {
     minHeight: 100,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
   },
   inputError: {
-    borderColor: '#F44336',
+    borderColor: "#F44336",
   },
   errorText: {
-    color: '#F44336',
+    color: "#ff6b6b",
     fontSize: 14,
     marginTop: 4,
   },
 });
 
-export default Input; 
+export default Input;
