@@ -28,12 +28,22 @@ const AnalysisScreen: React.FC = () => {
       setLoading(true);
       setError(null);
       const medicationNames = patient.medications.map(med => med.name);
-      const results = await checkMedicationInteractions(medicationNames);
-      setInteractions(results);
+      
+      // Add a short delay to ensure state updates
+      setTimeout(async () => {
+        try {
+          const results = await checkMedicationInteractions(medicationNames);
+          setInteractions(results);
+          setLoading(false);
+        } catch (err) {
+          console.error('Error checking interactions:', err);
+          setError('Could not check all medication interactions. Please ensure you have an internet connection and try again.');
+          setLoading(false);
+        }
+      }, 300);
     } catch (err) {
-      console.error('Error checking interactions:', err);
-      setError('Failed to check medication interactions. Please try again.');
-    } finally {
+      console.error('Error initiating interaction check:', err);
+      setError('Failed to check medication interactions. Please check your internet connection and try again.');
       setLoading(false);
     }
   };
@@ -87,6 +97,14 @@ const AnalysisScreen: React.FC = () => {
         ) : error ? (
           <View style={styles.errorContainer}>
             <Text style={styles.errorText}>{error}</Text>
+            <Text style={styles.errorHelpText}>
+              This may happen due to connection issues with the FDA database or if the medications cannot be found in the database.
+            </Text>
+            {interactions.length > 0 && (
+              <Text style={styles.partialResultsText}>
+                Showing {interactions.length} interaction(s) that could be verified.
+              </Text>
+            )}
             <Button
               title="Try Again"
               onPress={checkInteractions}
@@ -122,15 +140,17 @@ const AnalysisScreen: React.FC = () => {
 
                   {/* Simple explanation for laypeople */}
                   <Text style={styles.simplifiedExplanation}>
-                    {interaction.simplifiedExplanation} 
-                    {interaction.severity === 'major' && ' This is a SERIOUS interaction that requires immediate attention.'}
-                    {interaction.severity === 'moderate' && ' This is a MODERATE interaction that should be discussed with your doctor.'}
-                    {interaction.severity === 'minor' && ' This is a MINOR interaction but should still be monitored.'}
+                    {interaction.simplifiedExplanation}
                   </Text>
+
+                  {/* Added FDA source information */}
+                  {interaction.source && (
+                    <Text style={styles.sourceText}>{interaction.source}</Text>
+                  )}
 
                   {/* Possible effects section */}
                   <View style={styles.sectionContainer}>
-                    <Text style={styles.sectionSubtitle}>What might happen:</Text>
+                    <Text style={styles.sectionSubtitle}>FDA Information on Potential Effects:</Text>
                     {interaction.possibleEffects.map((effect, idx) => (
                       <View key={idx} style={styles.bulletPoint}>
                         <Text style={styles.bulletDot}>•</Text>
@@ -141,7 +161,7 @@ const AnalysisScreen: React.FC = () => {
 
                   {/* Recommendations section */}
                   <View style={styles.sectionContainer}>
-                    <Text style={styles.sectionSubtitle}>What you should do:</Text>
+                    <Text style={styles.sectionSubtitle}>FDA Recommendations:</Text>
                     {interaction.recommendations.map((recommendation, idx) => (
                       <View key={idx} style={styles.bulletPoint}>
                         <Text style={styles.bulletDot}>•</Text>
@@ -256,6 +276,18 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     color: '#F44336',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  errorHelpText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  partialResultsText: {
+    fontSize: 14,
+    color: '#666',
     textAlign: 'center',
     marginBottom: 16,
   },
@@ -408,6 +440,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#666',
     lineHeight: 18,
+  },
+  sourceText: {
+    fontSize: 12,
+    fontStyle: 'italic',
+    color: '#666',
+    marginBottom: 12,
   },
 });
 

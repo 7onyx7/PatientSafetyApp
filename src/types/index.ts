@@ -53,6 +53,7 @@ export interface MedicationInteraction {
   simplifiedExplanation: string; // Simple explanation for laypeople
   possibleEffects: string[]; // Potential effects that may occur
   recommendations: string[]; // Simple recommendations for the patient
+  source?: string; // The source of the interaction data
 }
 
 export type RootStackParamList = {
