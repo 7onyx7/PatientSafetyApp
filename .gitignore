@@ -30,7 +30,44 @@ yarn-error.*
 *.pem
 
 # local env files
-.env*.local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # typescript
 *.tsbuildinfo
+
+# jest
+coverage/
+
+# logs
+logs
+*.log
+
+# editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# android build
+android/app/build/
+android/build/
+android/gradle/
+android/app/src/
+
+# ios build
+ios/build/
+ios/Pods/
+
+# build
+build/
+
+# bundle
+*.bundle
+*.bundle.map
